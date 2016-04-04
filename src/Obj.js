@@ -139,18 +139,38 @@ var Obj = function(){
     return $("<div class='Obj'></div>");
   };
   this.refresher = function(element){
-    return this.renderer();
+    return this.renderer.apply(this);
   };
   this.destroyer = function(element){};
-  this.render = function(parents){
+  this.render = function(selector, option){
     var self = this;
-    $(parents).each(function(index, parent){
-      parent = $(parent);
-      var El = self.renderer.call(this);
+    if(selector === undefined)var selector = "body";
+    if(option === undefined)var option = "replace";
+    else option = option.toLowerCase();
+    var extra = [].slice.call(arguments, 2);
+    var returned  = this;
+    $(selector).each(function(index, target){
+      target = $(target);
+      var El = self.renderer.apply(self, extra);
       self._elements = self._elements.add( El );
-      parent.append(El);
+      
+      if(option == "append"){
+        target.append(El);
+      } else if(option == "prepend"){
+        target.prepend(El);
+      } else if(option == "after"){
+        target.after(El);
+      } else if(option == "before"){
+        target.before(El);
+      } else if(option == "return"){
+        returned = El;
+      } else if(option == "none"){
+      } else { // replace
+        target.after(El);
+        target.remove();
+      }
     });
-    return this;
+    return returned;
   };
   this.refresh = function(){
     var newElements = $();
@@ -175,6 +195,7 @@ var Obj = function(){
       self.destroyer(el);
     });
     this._elements.remove();
+    this._elements = $();
     return this;
   };
 };
