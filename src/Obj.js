@@ -1,8 +1,5 @@
-function extend(Child, Parent){
-  Child.prototype = new Parent();
-  Child.prototype.constructor = Child;
-};
-var Obj = function(){
+function Obj(){
+  this._parent = null;
   this._handlers = [];
   this._onceHandlers = [];
   this._elements = $();
@@ -117,9 +114,9 @@ var Obj = function(){
         this._onceHandlers.splice(i--, 1); // Remove
       }
     }
-    if(events.indexOf("change") > -1){
-      this.refresh();
-    }
+//    if(events.indexOf("change") > -1){
+//      this.refresh();
+//    }
     return this;
   };
   this.subscribe = function(O){
@@ -170,6 +167,7 @@ var Obj = function(){
         target.remove();
       }
     });
+    this.trigger("render");
     return returned;
   };
   this.refresh = function(){
