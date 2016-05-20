@@ -99,7 +99,7 @@ function Obj(){
     for(var i=0;i<this._handlers.length;i++){
       if(
         events.indexOf(this._handlers[i].event) > -1 ||
-        events.indexOf("all") > -1
+        this._handlers[i].event == "all"
       ){
         this._handlers[i].handler.call(this, this._handlers[i].event, data);
       }
@@ -108,7 +108,7 @@ function Obj(){
     for(var i=0;i<this._onceHandlers.length;i++){
       if(
         events.indexOf(this._onceHandlers[i].event) > -1 ||
-        events.indexOf("all") > -1
+        this._handlers[i].event == "all"
       ){
         this._onceHandlers[i].handler.call(this, this._onceHandlers[i].event, data);
         this._onceHandlers.splice(i--, 1); // Remove
@@ -190,7 +190,7 @@ function Obj(){
     var self = this;
     this._elements.each(function(i,el){
       el = $(el);
-      self.destroyer(el);
+      self.destroyer.apply(self, el);
     });
     this._elements.remove();
     this._elements = $();
