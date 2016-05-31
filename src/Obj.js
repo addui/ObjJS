@@ -1,8 +1,19 @@
+var GUIDList = [];
+function generateGUID(){
+  do {
+    var GUID = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+      return v.toString(16);
+    });
+  } while(GUIDList.indexOf(GUID)>-1);
+  return GUID;
+};
 function Obj(){
   this._parent = null;
   this._handlers = [];
   this._onceHandlers = [];
   this._elements = $();
+  this.guid = generateGUID();
   this.on = function(events, handler){
     if(typeof(events) == "function" && handler === undefined){
       handler = events;
@@ -148,22 +159,22 @@ function Obj(){
     var returned  = this;
     $(selector).each(function(index, target){
       target = $(target);
-      var El = self.renderer.apply(self, extra);
-      self._elements = self._elements.add( El );
-      
+      var $el = $(self.renderer.apply(self, extra));
+      $el.attr("guid", self.guid);
+      self._elements = self._elements.add( $el );
       if(option == "append"){
-        target.append(El);
+        target.append($el);
       } else if(option == "prepend"){
-        target.prepend(El);
+        target.prepend($el);
       } else if(option == "after"){
-        target.after(El);
+        target.after($el);
       } else if(option == "before"){
-        target.before(El);
+        target.before($el);
       } else if(option == "return"){
-        returned = El;
+        returned = $el;
       } else if(option == "none"){
       } else { // replace
-        target.after(El);
+        target.after($el);
         target.remove();
       }
     });
