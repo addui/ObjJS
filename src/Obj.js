@@ -1,3 +1,7 @@
+/**
+* @author Dustin Poissant
+* @version 1.3.1
+**/
 var GUIDList = [];
 function generateGUID(){
   do {
@@ -200,8 +204,8 @@ function Obj(){
   this.destroy = function(){
     var self = this;
     this._elements.each(function(i,el){
-      el = $(el);
-      self.destroyer.apply(self, el);
+      var $el = $(el);
+      self.destroyer.call(self, $el);
     });
     this._elements.remove();
     this._elements = $();
