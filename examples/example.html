@@ -4,14 +4,13 @@
   <title>ObjJS Example</title>
   <script src='../res/jquery.js'></script>
   <script src='../src/Obj.js'></script>
+  <script src='../prototypes/Button.proto.js'></script>
 </head>
 <body>
   <script>
-    var o = new Obj();
-    
-    o.defProp("key1", "value1");
-    
-    o.render("body", "append");
+    new Button("My Button", function(){
+      alert("You clicked the Button!");
+    }).render("body");
   </script>
 </body>
 </html>
