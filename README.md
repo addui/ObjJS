@@ -43,6 +43,7 @@ That is a mouthful so what does it mean?
  - **jQuery** = A DOM manipulation library/framework for JavaScript, again if you don't know what jQuery is then this is not for you. jQuery is not included within "Obj.js" and should be downloaded separately and imported into your document.
 
 [Click Here for more information about Object-Oriented Programming](OOP.md)
+
 [Click Here for more information about Event-Driven Programming](EDP.md)
 
 ## Creating a new Prototype

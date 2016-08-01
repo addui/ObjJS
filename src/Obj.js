@@ -211,8 +211,17 @@ var Objs = {};
     this.defSettings = function(settings){
       if(settings === undefined)
         var settings = {};
-      return this.defMember("settings", settings, function(newSettings){
-        return $.extend(this._settings, newSettings);
+      this._settings = settings;
+      Object.defineProperty(this, "settings", {
+        get: function(){
+          this.trigger("getsettings settings", this._settings);
+          return this._settings;
+        },
+        set: function(newSettings){
+          this._settings = $.extend(this._settings, newSettings);
+          this.trigger("setsettings settings", this._settings);
+          this.refresh("settings");
+        }
       });
     };
     this.defMethod = function(name, handler){
