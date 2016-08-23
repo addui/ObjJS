@@ -1,24 +1,19 @@
-/**
-* @author Dustin Poissant
-* @version 2.0.0
-**/
-var Obj;
-var Objs = {};
-(function(){
-  var GUIDList = [];
-  function generateGUID(){
-    do {
-      var GUID = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-        return v.toString(16);
-      });
-    } while(GUIDList.indexOf(GUID)>-1);
-    return GUID;
-  };
+var GUID=function(){function e(){do var t="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,function(e){var t=16*Math.random()|0,r="x"==e?t:3&t|8;return r.toString(16)});while(!e.register(t));return t}return e.create=function(){return e()},e.version="1.2.0",e.list=[],e.exists=function(t){return e.list.indexOf(t)>-1},e.register=function(t){return e.exists(t)?!1:(e.list.push(t),!0)},e}();
+var Obj = (function(){
   function toFunc(n){if("function"==typeof n)return n;if("string"==typeof n){if(void 0!=window[n]&&"function"==typeof window[n])return window[n];try{return new Function(n)}catch(t){}}return function(){return n}}
-  Obj = function(){
-    this.guid = generateGUID();
-
+  
+  /*
+  * Obj base prototype
+  */
+  function Obj(){
+    this._guid = GUID();
+    Object.defineProperty(this, "guid", {
+      get: function(){
+        return this._guid;
+      },
+      set: function(){} // READ ONLY
+    });
+    
     /*
     * Event Driven Members / Methods
     */
@@ -89,7 +84,7 @@ var Objs = {};
           events.indexOf(this._handlers[i].event) > -1 ||
           this._handlers[i].event == "all"
         ){
-          toFunc(this._handlers[i].handler).call(this, this._handlers[i].event, data);
+          toFunc(this._handlers[i].handler).call(this, (this._handlers[i].event!="all")?this._handlers[i].event:events.join(" "), data);
         }
       }
       return this;
@@ -104,7 +99,8 @@ var Objs = {};
       for(var k in this){
         if(
           k.indexOf("_") == 0 &&
-          ["_handlers", "_elements"].indexOf(k) == -1
+          typeof(this[k]) != "function" &&
+          ["_handlers", "_elements", "_guid"].indexOf(k) == -1
         ){
           $o.append("<div class='Obj-member'><div class='Obj-member-key'>"+(k.substr(1))+"</div><div class='Obj-member-value'>"+this[k]+"</div></div>");
         }
@@ -167,11 +163,13 @@ var Objs = {};
       var self = this;
       this._elements.each(function(i,el){
         var $el = $(el);
+        $el.off();
+        $el.find("*").off();
         self.destroyer.call(self, $el);
       });
       this._elements.remove();
       this._elements = $();
-      delete Objs[this.guid];
+      delete Obj.directory[this.guid];
       return this;
     };
 
@@ -192,13 +190,13 @@ var Objs = {};
         get: function(){
           var val = this["_"+name];
           if(getter)
-            val = getter(val);
+            val = getter.call(self, val);
           this.trigger("get"+name+" "+name, val);
           return val;
         },
         set: function(newVal){
           if(setter){
-            var setterVal = setter(newVal);
+            var setterVal = setter.call(self, newVal);
             if(setterVal !== undefined)
               newVal = setterVal;
           }
@@ -228,14 +226,73 @@ var Objs = {};
       var self = this;
       this["_"+name] = handler;
       this[name] = function(){
-        var returned = self["_"+name].call(self, arguments);
+        var returned = self["_"+name].apply(self, arguments);
         self.trigger(name, arguments);
-        return returned;
+        return (returned!=undefined)?returned:self;
       };
     };
 
-    Objs[this.guid] = this;
+    Obj.directory[this.guid] = this;
   };
+  
+  /*
+  * Statics
+  */
+  Obj.version = "2.1.1";
+  Obj.directory = {};
+  Obj.extend = function(child, parent){
+    if(!parent)parent = Obj;
+    var Proto = function(){
+      parent.apply(this, arguments);
+      child.apply(this, arguments);
+    };
+    child.prototypoe = Object.create(parent.prototype);
+    Proto.prototype = Object.create(child.prototype);
+    return Proto;
+  };
+  Obj.create = function(o){
+    if(typeof(o) == "function"){
+      return Obj.extend(o);
+    } else if(typeof(o) == "object"){
+      
+      // Creation Code
+      var cc = "function Proto(){Obj.apply(this);";
+      for(var k in o){
+        var v = o[k];
+        if(typeof(v)=="function"){
+          if(["init","renderer","refresher","destroyer"].indexOf(k)>-1){
+            cc += "this."+k+"="+v+";";
+          } else {
+            cc += "this.defMethod('"+k+"',"+v+");";
+          }
+        } else {
+          if(typeof(v)=="string")v = '"'+v+'"';
+          cc += "this.defMember('"+k+"', "+v+");";
+        }
+      }
+      if(o.init) cc+="this.init.apply(this,arguments);";
+      cc += "};Proto.prototype = Object.create(Obj.prototype);";
+      eval(cc);
+      return Proto;
+    } else {
+      function Proto(){
+        Obj.apply(this);
+      };
+      Proto.prototype = Object.create(Obj.prototype);
+      return Proto;
+    }
+  };
+  Obj.get = function(guid){
+    return Obj.directory[guid];
+  };
+  Obj.delete = function(guid){
+    if(typeof(guid)=="object"){
+      guid.destroy();
+    } else {
+      Obj.get(guid).destroy();
+    }
+    return Obj;
+  };
+  
+  return Obj;
 })();
-
-

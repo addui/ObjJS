@@ -1,5 +1,7 @@
 # Obj.JS
 
+> *2.1.1*
+
 ```JavaScript
 new Obj().render("body");
 ```
@@ -247,7 +249,7 @@ These methods have defaults already defined by `Obj` but should be overwritten w
 This method is called by [`render`](#render-target-selector-option), it should return a HTMLElement or jQuery object that represents the object.
 
 Here is the "renderer" function for our `Button` prototype.
-```
+```JavaScript
 function Button(label, action){
   Obj.apply(this);
   this.label = label;
@@ -269,7 +271,7 @@ This method is used to refresh the DOM element without having to destroy it and 
 
 Because a single object can be rendered multiple times, this method will be called once for each rendered element and the jQuery object containing the rendered element will be passed in as the first argument. The second argument will be the "changed" string passed into the [`refresh`](#refresh-changed) method when it was called. This can be useful to only refresh the part of the element effected by the change, but keep in mind this may be `undefined`.
 
-```
+```JavaScript
 function Button(label, action){
   Obj.apply(this);
   this.label = label;
@@ -293,7 +295,7 @@ In the above example the method does not return anything, but it optionally can 
 
 In this example, if the changed is the "label" it is refresh as simply as possible, if the change is the "action" no refresh is necessary, and any other (unexpected) change will result in the object be re-rendered.
 
-```
+```JavaScript
 function Button(label, action){
   Obj.apply(this);
   this.label = label;
@@ -322,7 +324,7 @@ If this method is defined then it will be called when the [`destroy`](#destroy) 
 
 This method should not return any values.
 
-```
+```JavaScript
 function Button(label, action){
   Obj.apply(this);
   this.label = label;
@@ -469,16 +471,16 @@ Button.prototype = Object.create(Obj.prototype);
 ```
 
 ## The GUID
-Each **instance** is assigned a Globally Unique Identifier or GUID. This is stored as a member named `guid`. It should be treated a static, you can access it if you want but **DO NOT CHANGE IT**, the guid is also added to the rendered element as an attribute.
+**Obj.JS** uses [GUID.js](https://github.com/addui/GUIDJS) (included) to create a unique identifier for each instance of any prototype that extends `Obj`. This is stored as a member named `guid`. This member is read only, the GUID is also added to the rendered element as an attribute.
 
-#### Objs
-**Obj.JS** exposes a global variable called `Objs`, this variable is an object where **every** instance of `Obj` (and prototypes that extend `Obj`) is stored, it's key is the instance's GUID. This can be useful for getting the object from the DOM.
+#### Obj.directory
+**Obj.JS** stores each instance in `Obj.directory` where it can be retrieved at a later time when you do not have direct access to the object. Using this you can retrieve the object that was used to generated the DOM element using the elements `guid` attribute.
 
 ```JavaScript
 new Button("My Button").render("#target");
 
 // Then in another script
-var btn = Objs[$("#target").children("button").attr("guid")];
+var btn = Obj.directory[$("#target").children("button").attr("guid")];
 // Now you can use "btn"
 ```
 

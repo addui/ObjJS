@@ -40,11 +40,11 @@ This above example works well because there are only 2 callback functions, but w
 var o = new FooBar(undefined, callback2, undefined, undefined, undefined, undefined, undefined, callback8)
 ```
 
-This is quickly becomes unmanageable.
+This quickly becomes unmanageable.
 
 ## Events
 
-In Event-Driven programming, an "event" is a keyword that is listened for and triggered to call callbacks rather than having to directly specify the callback. This can allow for hundreds of callbacks to be possible very easily. The only catch is that you must start listening for an event after the object has already been initialized.
+In Event-Driven programming, an "event" is a keyword that is listened for and triggered, to call callbacks rather than having to directly specify the callback. This can allow for hundreds of callbacks to be possible very easily. The only catch is that you must start listening for an event after the object has already been initialized.
 
 ### How does it work?
 EDP works by exposing 3 new methods on an object, one to start listening for an event, one to stop listening for an event, and one to indicate that the event has happened. There are two different common naming conventions for these methods on/off/trigger and subscribe(sub)/unsubscribe(unsub)/publish(pub). **Obj.JS** uses on/off/trigger so we will be using on/off/trigger from now on. Just remember if another site says "subscribe" that is our "on", "unsubscribe" is our "off", and "publish" is our "trigger".
@@ -78,7 +78,7 @@ Event-Driven objects expose a public method called "trigger" (or "pub"). This is
 
 This method takes the name of the event as the first argument and optionally can take some data about the event as the second arguments.
 
-## Simple Example
+## Example
 For this example lets assume we are using the prototype `Obj` that handles all the event-driven logic. We will create a new prototype that extends `Obj` and then uses these event-driven methods.
 
 ```JavaScript
