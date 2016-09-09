@@ -1,6 +1,6 @@
 # Obj.JS
 
-> *2.1.1*
+> *2.1.2*
 
 ```JavaScript
 new Obj().render("body");
