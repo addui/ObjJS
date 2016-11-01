@@ -1,7 +1,7 @@
 var GUID=function(){function e(){do var t="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,function(e){var t=16*Math.random()|0,r="x"==e?t:3&t|8;return r.toString(16)});while(!e.register(t));return t}return e.create=function(){return e()},e.version="1.2.0",e.list=[],e.exists=function(t){return e.list.indexOf(t)>-1},e.register=function(t){return e.exists(t)?!1:(e.list.push(t),!0)},e}();
 var Obj = (function(){
   function toFunc(n){if("function"==typeof n)return n;if("string"==typeof n){if(void 0!=window[n]&&"function"==typeof window[n])return window[n];try{return new Function(n)}catch(t){}}return function(){return n}}
-  
+
   /*
   * Obj base prototype
   */
@@ -13,7 +13,7 @@ var Obj = (function(){
       },
       set: function(){} // READ ONLY
     });
-    
+
     /*
     * Event Driven Members / Methods
     */
@@ -233,12 +233,13 @@ var Obj = (function(){
     };
 
     Obj.directory[this.guid] = this;
+
   };
-  
+
   /*
   * Statics
   */
-  Obj.version = "2.1.1";
+  Obj.version = "2.1.3";
   Obj.directory = {};
   Obj.extend = function(child, parent){
     if(!parent)parent = Obj;
@@ -254,7 +255,6 @@ var Obj = (function(){
     if(typeof(o) == "function"){
       return Obj.extend(o);
     } else if(typeof(o) == "object"){
-      
       // Creation Code
       var cc = "function Proto(){Obj.apply(this);";
       for(var k in o){
@@ -266,11 +266,11 @@ var Obj = (function(){
             cc += "this.defMethod('"+k+"',"+v+");";
           }
         } else {
-          if(typeof(v)=="string")v = '"'+v+'"';
+          if(typeof(v)=="string") v = '"'+v+'"';
           cc += "this.defMember('"+k+"', "+v+");";
         }
       }
-      if(o.init) cc+="this.init.apply(this,arguments);";
+      if(o.init) cc += "this.init.apply(this,arguments);";
       cc += "};Proto.prototype = Object.create(Obj.prototype);";
       eval(cc);
       return Proto;
@@ -282,17 +282,6 @@ var Obj = (function(){
       return Proto;
     }
   };
-  Obj.get = function(guid){
-    return Obj.directory[guid];
-  };
-  Obj.delete = function(guid){
-    if(typeof(guid)=="object"){
-      guid.destroy();
-    } else {
-      Obj.get(guid).destroy();
-    }
-    return Obj;
-  };
-  
+
   return Obj;
 })();
