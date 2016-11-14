@@ -1,12 +1,10 @@
 # Obj.JS
 
-> *2.1.2*
+> 2.1.3
 
 ```JavaScript
 new Obj().render("body");
 ```
-
-![](res/icon.png)
 
 ## Table of Contents
  - [Introduction](#introduction)
