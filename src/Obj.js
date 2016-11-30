@@ -195,7 +195,7 @@ var Obj = (function(){
     */
     this.defMember = function(name, value, setter, getter){
       var self = this;
-      var disallowed = ["handlers", "on", "off", "trigger", "elements", "render", "renderer", "refresh", "refresher", "destroy", "destroyer", "defMember", "defSettings", "defMethod", "guid"];
+      var disallowed = ["handlers", "on", "off", "trigger", "elements", "render", "refresh", "destroy", "defMember", "defSettings", "defMethod", "guid", "clean"];
       for(var i=0; i<disallowed; i++){
         if(
           disallowed[i] == name ||
@@ -241,6 +241,13 @@ var Obj = (function(){
     };
     this.defMethod = function(name, handler){
       var self = this;
+      var disallowed = ["handlers", "on", "off", "trigger", "elements", "render", "refresh", "destroy", "defMember", "defSettings", "defMethod", "guid", "clean"];
+      for(var i=0; i<disallowed; i++){
+        if(
+          disallowed[i] == name ||
+          "_"+disallowed[i] == name
+        ) return false;
+      }
       this["_"+name] = handler || function(){};
       this[name] = function(){
         var returned = self["_"+name].apply(self, arguments);
@@ -250,13 +257,12 @@ var Obj = (function(){
     };
 
     Obj.directory[this.guid] = this;
-
   };
 
   /*
   * Statics
   */
-  Obj.version = "2.2.1";
+  Obj.version = "2.3.0";
   Obj.directory = {};
   Obj.extend = function(child, parent){
     if(!parent)parent = Obj;
@@ -272,24 +278,19 @@ var Obj = (function(){
     if(typeof(o) == "function"){
       return Obj.extend(o);
     } else if(typeof(o) == "object"){
-      // Creation Code
-      var cc = "function Proto(){Obj.apply(this);";
-      for(var k in o){
-        var v = o[k];
-        if(typeof(v)=="function"){
-          if(["init","renderer","refresher","destroyer"].indexOf(k)>-1){
-            cc += "this."+k+"="+v+";";
+      var Proto = function(){
+        Obj.apply(this, arguments);
+        for(var k in o){
+          if(typeof(o[k]) == "function"){
+            this.defMethod(k, o[k]);
           } else {
-            cc += "this.defMethod('"+k+"',"+v+");";
+            this.defMember(k, o[k]);
           }
-        } else {
-          if(typeof(v)=="string") v = '"'+v+'"';
-          cc += "this.defMember('"+k+"', "+v+");";
         }
-      }
-      if(o.init) cc += "this.init.apply(this,arguments);";
-      cc += "};Proto.prototype = Object.create(Obj.prototype);";
-      eval(cc);
+        if(this.init){
+          this.init.apply(this, arguments);
+        }
+      };
       return Proto;
     } else {
       function Proto(){
