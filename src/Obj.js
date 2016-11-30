@@ -111,6 +111,7 @@ var Obj = (function(){
       return this.renderer.apply(this);
     };
     this.destroyer = function(element){};
+    this.cleaner = function(){};
     this.render = function(selector, option){
       var self = this;
       if(selector === undefined)var selector = "body";
@@ -169,7 +170,19 @@ var Obj = (function(){
       });
       this._elements.remove();
       this._elements = $();
-      delete Obj.directory[this.guid];
+      delete Obj.directory[this._guid];
+      delete GUID.list[this._guid];
+      return this;
+    };
+    this.clean = function(){
+      var $all = $("body *");
+      for(var i=0; i<this._elements.length; i++){
+        if($all.filter(this._elements[i]).length == 0){
+          this._elements = this._elements.not(this._elements.eq(i));
+        }
+      }
+      this.cleaner();
+      this.trigger("clean");
       return this;
     };
 
@@ -239,7 +252,7 @@ var Obj = (function(){
   /*
   * Statics
   */
-  Obj.version = "2.1.3";
+  Obj.version = "2.2.0";
   Obj.directory = {};
   Obj.extend = function(child, parent){
     if(!parent)parent = Obj;
@@ -281,6 +294,12 @@ var Obj = (function(){
       Proto.prototype = Object.create(Obj.prototype);
       return Proto;
     }
+  };
+  Obj.clean = function(){
+    for(var guid in Obj.directory){
+      Obj.directory[guid].clean();
+    }
+    return this;
   };
 
   return Obj;

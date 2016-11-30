@@ -1,6 +1,6 @@
 # Obj.JS
 
-> 2.1.3
+> 2.2.0
 
 ```JavaScript
 new Obj().render("body");
@@ -418,7 +418,7 @@ function Product(name, price){
 }
 Product.prototype = Object.create(Obj.prototype);
 ```
-  
+
 #### defSettings([default_settings])
 One of the most common members that prototypes have is a "settings" member. This member is often a object literal, containing many settings. But when a new settings object is "set" you likely will not want to overwrite the settings that were not passed into the new object. This method creates a settings member and uses a setter that merges the new settings into the old settings.
 
@@ -545,7 +545,7 @@ function Image(src, caption, styles){
       return this.renderer.call(this);
     }
   };
-  
+
   this.init = function(src, caption, styles){
     if(src)
       this.src = src;
@@ -556,17 +556,3 @@ function Image(src, caption, styles){
   }
 }
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
