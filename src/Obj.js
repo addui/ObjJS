@@ -79,12 +79,16 @@ var Obj = (function(){
     };
     this.trigger = function(events, data){
       events = events.toLowerCase().split(" ");
-      for(var i=0;i<this._handlers.length;i++){
+      for(var i=0; i<this._handlers.length; i++){
         if(
           events.indexOf(this._handlers[i].event) > -1 ||
           this._handlers[i].event == "all"
         ){
           toFunc(this._handlers[i].handler).call(this, (this._handlers[i].event!="all")?this._handlers[i].event:events.join(" "), data);
+          this._handlers[i].trigger_count++;
+          if(this._handlers[i].max_count && this._handlers[i].max_count <= this._handlers[i].trigger_count){
+            this.handlers.splice(i--, 1);
+          }
         }
       }
       return this;
@@ -237,7 +241,7 @@ var Obj = (function(){
     };
     this.defMethod = function(name, handler){
       var self = this;
-      this["_"+name] = handler;
+      this["_"+name] = handler || function(){};
       this[name] = function(){
         var returned = self["_"+name].apply(self, arguments);
         self.trigger(name, arguments);
@@ -252,7 +256,7 @@ var Obj = (function(){
   /*
   * Statics
   */
-  Obj.version = "2.2.0";
+  Obj.version = "2.2.1";
   Obj.directory = {};
   Obj.extend = function(child, parent){
     if(!parent)parent = Obj;

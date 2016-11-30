@@ -1,6 +1,6 @@
 # Obj.JS
 
-> 2.2.0
+> 2.2.1
 
 ```JavaScript
 new Obj().render("body");
