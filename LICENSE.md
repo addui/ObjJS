@@ -1,6 +1,6 @@
-#[Attribution-NonCommercial-ShareAlike 3.0 United States](https://creativecommons.org/licenses/by-nc-sa/3.0/us/legalcode)
+# [Attribution-NonCommercial-ShareAlike 3.0 United States](https://creativecommons.org/licenses/by-nc-sa/3.0/us/legalcode)
 
-        
+
 
 # License
 

@@ -37,7 +37,10 @@ var Obj = (function(){
       }
       if(!h) return this;
       for(var i=0;i<e.length;i++){
-        this._handlers.push({
+        if(!this._handlers[e[i]]){
+          this._handlers[e[i]] = [];
+        }
+        this._handlers[e[i]].push({
           event: e[i],
           handler: h,
           max_count: c,
@@ -49,29 +52,37 @@ var Obj = (function(){
     this.off = function(events, handler){
       if(handler === undefined && typeof(events) == "function"){
         // Handler only
-        var handler = events;
-        for(var i=0;i<this._handlers.length;i++){
-          if(this._handlers[i].handler == handler){
-            this._handlers.splice(i--, 1);
+        handler = events;
+        for(var event in this._handlers){
+          var handlers = this._handlers[event];
+          for(var h=0; h<handlers.length; h++){
+            if(handler == handlers[h].handler){
+              this._handlers[event].splice(h--, 1);
+            }
+          }
+          if(this._handlers[event].length == 0){
+            delete this._handlers[event];
           }
         }
       } else if(handler === undefined && typeof(events) == "string"){
         // Events only
         events = events.toLowerCase().split(" ");
-        for(var i=0;i<this._handlers.length;i++){
-          if(events.indexOf(this._handlers[i].event) > -1){
-            this._handlers.splice(i--, 1);
-          }
+        for(var e=0; e<events.length; e++){
+          delete this._handlers[events[e]];
         }
       } else {
         // Both Events and Hanlder
         events = events.toLowerCase().split(" ");
-        for(var i=0;i<this._handlers.length;i++){
-          if(
-            events.indexOf(this._handlers[i].event) > -1 &&
-            this._handlers[i].handler == handler
-          ){
-            this._handlers.splice(i--, 1);
+        for(var e=0; e<events.length; e++){
+          var event = events[e];
+          var handlers = this._handlers[event];
+          for(var h=0; h<handlers.length; h++){
+            if(handlers[h].handler == handler){
+              handlers.splice(h--, 1);
+            }
+          }
+          if(this._handlers[event].length == 0){
+            delete this._handlers[event];
           }
         }
       }
@@ -79,15 +90,16 @@ var Obj = (function(){
     };
     this.trigger = function(events, data){
       events = events.toLowerCase().split(" ");
-      for(var i=0; i<this._handlers.length; i++){
-        if(
-          events.indexOf(this._handlers[i].event) > -1 ||
-          this._handlers[i].event == "all"
-        ){
-          toFunc(this._handlers[i].handler).call(this, (this._handlers[i].event!="all")?this._handlers[i].event:events.join(" "), data);
-          this._handlers[i].trigger_count++;
-          if(this._handlers[i].max_count && this._handlers[i].max_count <= this._handlers[i].trigger_count){
-            this.handlers.splice(i--, 1);
+      for(var e=0; e<events.length; e++){
+        var event = events[e];
+        if(this._handlers[event]){
+          for(var h=0; h<this._handlers[event].length; h++){
+            var handler = this._handlers[event][h];
+            toFunc(handler.handler).call(this, event, data);
+            handler.trigger_count++;
+            if(handler.max_count && handler.max_coung < handler.trigger_count){
+              this._Handlers[event].splice(h--, 1);
+            }
           }
         }
       }
@@ -98,6 +110,7 @@ var Obj = (function(){
     * Reative Members / Methods
     */
     this._elements = $();
+    this.pauseRefreshing = false;
     this.renderer = function(){
       var $o = $("<div class='Obj'></div>");
       for(var k in this){
@@ -147,6 +160,7 @@ var Obj = (function(){
       return returned;
     };
     this.refresh = function(data){
+      if(this.pauseRefreshing) return this;
       var newElements = $();
       for(var i=0;i<this._elements.length;i++){
         var oldElement = this._elements.eq(i);
@@ -208,7 +222,6 @@ var Obj = (function(){
           var val = this["_"+name];
           if(getter)
             val = getter.call(self, val);
-          this.trigger("get"+name+" "+name, val);
           return val;
         },
         set: function(newVal){
@@ -218,8 +231,8 @@ var Obj = (function(){
               newVal = setterVal;
           }
           this["_"+name] = newVal;
-          this.trigger("set"+name+" "+name, newVal);
           this.refresh(name);
+          this.trigger(name, newVal);
         }
       })
     };
@@ -229,13 +242,12 @@ var Obj = (function(){
       this._settings = settings;
       Object.defineProperty(this, "settings", {
         get: function(){
-          this.trigger("getsettings settings", this._settings);
           return this._settings;
         },
         set: function(newSettings){
           this._settings = $.extend(this._settings, newSettings);
-          this.trigger("setsettings settings", this._settings);
           this.refresh("settings");
+          this.trigger("settings", this._settings);
         }
       });
     };
@@ -262,7 +274,7 @@ var Obj = (function(){
   /*
   * Statics
   */
-  Obj.version = "2.3.0";
+  Obj.version = "3.0.0";
   Obj.directory = {};
   Obj.extend = function(child, parent){
     if(!parent)parent = Obj;

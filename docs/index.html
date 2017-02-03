@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Obj.JS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel='stylesheet' href='Kempo.css' />
+  <script src='jquery-3.1.1.min.js'></script>
+  <script src='Kempo.js'></script>
+  <script src='Obj.js'></script>
+</head>
+<body>
+  <kempo-include src='nav.inc.html'></kempo-include>
+  <kempo-wrapper>
+    <h1 center>Obj.JS</h1>
+    <p center><i>v 3.0.0</i></p>
+    <p>A Reactive Event-Driven Object-Oriented JavaScript Framework built on <a href='https://jquery.com' target="_blank">jQuery</a>.</p>
+    <p>That is a mouthful so what does it mean?</p>
+    <ul>
+      <li><b>Reactive</b> = Data is automatically bound, any changes made to the object (model) will automatically update the DOM (view).</li>
+      <li><b>Event Driven</b> = Instead of using callbacks you can listen for events that happen within the object using the <code>on</code> method.</li>
+      <li><b>Object-Oriented</b> = Everything is created as objects (prototypes) that are instantiated.</li>
+      <li><b>Framework</b> = This script does not "do" anything, by itself it does not give your site any additional functionality, but rather it is a set of base code that can be used to build widgets/plugins.</li>
+      <li><b>JavaScript</b> = If you don't know what JavaScript is you probably should not be here.</li>
+      <li><b>jQuery</b> = A DOM manipulation library/framework for JavaScript, again if you don't know what jQuery is then this is not for you. jQuery is not included within "Obj.js" and should be downloaded separately and imported into your document.</li>
+    </ul>
+
+    <p>These docs are for people who already understand the concepts of Object-Oriented and Event-Driven programming.</p>
+    <p><a href='oop.html'>Overview of Object-Oriented Programming</a></p>
+    <p><a href='edp.html'>Overview of Event-Driven Programming</a></p>
+
+    <hr>
+    <h3>Creating a new Prototype</h3>
+    <p>To create a new prototype use <code>Obj.create</code>. This function takes a single argument, the argument can be either an <a href='#create-object'>object</a> or a <a href='#create-function'>constructor function</a>.</p>
+
+    <h4 id='create-object'>Object Method</h4>
+    <p>You can create a prototype by passing an object into <code>Obj.create</code> all members/methods will automatically be created as reactive members/methods. This way is simplier by offers less functionality.</p>
+
+    <h5>Members</h5>
+    <p>Create a member by adding a member to the object.</p>
+<pre info="JavaScript">
+var Person = Obj.create({
+  name: "First Last"
+});
+</pre>
+
+    <h5>Methods</h5>
+    <p>Create a method by creating a member that is a function.</p>
+<pre info="JavaScript">
+var Person = Obj.create({
+  name: "First Last",
+  sayHi: function(){
+    alert("Hello " + this.name);
+  }
+});
+</pre>
+
+    <h5>Initialization</h5>
+    <p>You can create an initialzation method (like a constructor that can be called multiple times, "reinitialized") by adding a <code>init</code> method.</p>
+<pre info="JavaScript">
+var Person = Obj.create({
+  name: "First Last",
+  sayHi: function(){
+    alert("Hello " + this.name);
+  },
+  init: function(name){
+    this.name = name;
+  }
+});
+</pre>
+    <p>Unlike when using the <a href='#create-function'>Constructor Function method for creating a prototype</a> the "init" method is automatically executed once when prototype is instantiated, and the instantiation arguments are passed into the "init" method.</p>
+
+    <h4 id='create-function'>Constructor Method</h4>
+    <p>You can create a prototype by passing a function into <code>Obj.create</code>. Using this method is a bit more complicated by allows you more controls. For example, you can create you members/methods as reactive or not reactive. You also may define custom getters and setters for your members. You also have the option of using the prebuilt "settings" member.</p>
+
+    <h5>Members</h5>
+    <p>Define "normal" members using the <code>this</code> keyword. Normal in this case means that it is not reactive, meaning that no events are triggered when it is changed and the DOM (view) does not update when it is changed.</p>
+<pre info="JavaScript">
+var Person = Obj.create(function(){
+  this.name = "First Last";
+});
+</pre>
+
+    <h5>Methods</h5>
+    <p>Define "normal" methods by assigning a function to a normal member using the <code>this</code> keyword. Normal in this case means that an event is not automatically triggered when the method is called.</p>
+<pre info="JavaScript">
+var Person = Obj.create(function(){
+  this.name = "First Last";
+  this.sayHi = function(){
+    alert("Hello " + this.name);
+  };
+});
+</pre>
+
+    <h5><code>defMember</code></h5>
+    <p>Using the <code>defMember(name [, value [, setter [, getter]]])</code> method will create a member that when it is change will automatically trigger an event with the same name as the member, and it will automatically refresh the DOM (view).</p>
+    <p><b>name</b> = The name of the member.</p>
+    <p><b>value</b> = The initial value of the member.</p>
+    <p><b>setter</b> = A function that is called when the member is attempted to be changed. The function's only parameter is the value that was attempted to be set, and the function should return the value to be set.</p>
+    <p><b>getter</b> = A function that is called when the member is accessed. The function's only parameter is the member's value, and the function should return something to the script attempting to retrieve the member.</p>
+<pre info="JavaScript">
+var Person = Obj.create(function(){
+  this.defMember("name", "First Last");
+});
+</pre>
+    <h6>Getter / Setter Example</h6>
+<pre info="JavaScript">
+var Product = Obj.create(function(){
+  this.defMember("price", 0,
+    // Setter
+    function(value){
+      return Math.round(value * 100); // saves the value in pennies instead of dollars
+    },
+    // Geter
+    function(value){
+      return value / 100; // returns the value in dollars instead of pennies
+    }
+  );
+});
+</pre>
+
+    <h5><code>defMethod</code></h5>
+    <p>Using the <code>defMethod(name, handler)</code> method will create a member that automatically triggers an event with the same name as the method whenever it is called.</p>
+    <p><b>name</b> = The name of the method.</p>
+    <p><b>handler</b> = The function to the executed when the method is called.</p>
+<pre info="JavaScript">
+var Person = Obj.create(function(){
+  this.defMember("name", "First Last");
+  this.defMethod("sayHi", function(){
+    console.log("Hello " + this.name);
+  });
+});
+</pre>
+
+    <h5><code>defSettings</code></h5>
+    <p>Using the <code>defSettings(settings_literal)</code> method is like creating a member that is an object, but when it is change the changes are merged into the current values.</p>
+<pre info="JavaScript">
+var MyProto = Obj.create(function(){
+  this.defSettings({
+    setting1: "foo",
+    setting2: "bar"
+  });
+});
+
+var a = new MyProto();
+a.settings = {
+  setting1: "Hello",
+  setting3: "World"
+};
+console.log(a.settings);
+</pre>
+<pre info="Console">
+{
+  "setting1": "Hello",
+  "setting2": "bar",
+  "setitng3": "World"
+}
+</pre>
+
+    <h5>Initialization</h5>
+    <p>Unlike prototypes created using the <a href='#create-object'>Object Method</a>, prototypes created using the <a href='#create-function'>Constructor Method</a> do not have initializes because the constructor itself is called when an instance is created meaning it is also the initializer.</p>
+<pre info="JavaScript">
+var Person = Obj.create(function(name){
+  this.defMember("name", name);
+  this.defMethod("sayHi", function(){
+    console.log("Hello " + this.name);
+  });
+});
+</pre>
+    <p>But what happens when you want to "re" initialize the object. For this you should create a method called "init" and then at the end of the constructor call it (using <code>apply</code>) using the constructor has it's context and passing in the constructors arguments.</p>
+<pre info="JavaScript">
+var Person = Obj.create(function(){
+  this.defMember("name");
+  this.defMethod("sayHi", function(){
+    console.log("Hello " + this.name);
+  });
+  this.init = function(name){
+    this.name = name;
+  };
+  this.init.apply(this, arguments);
+});
+</pre>
+    <p>Now the object can be reinitialized by calling the <code>init</code> function and passing in some new paramters.</p>
+
+    <hr>
+    <h3>Event Driven Methods</h3>
+    <p>When using <code>Obj.create</code> your prototype automatically inherits the <code>on</code>/<code>off</code>/<code>trigger</code> methods that are common when using <a href='edp.html'>Event-Driven Programming</a>.</p>
+<pre info="JavaScript">
+var p1 = new Person("Dustin Poissant");
+p1.on("name", function(){
+  console.log("This persons name has changed to " + p1.name);
+});
+p.name = "Kayla Poissant";
+</pre>
+<pre info="Console">
+This persons name ahs changed to Kayla Poissant
+</pre>
+
+    <hr>
+    <h3>Obj.JS Reactive Methods</h3>
+    <p>When using <code>Obj.create</code> your prototype automatically inherits the following "reactive" methods.</p>
+
+    <h5><code>render(target_selector [, option])</code></h5>
+    <p>This method renders the object to the DOM at the target.</p>
+    <p><b>target_selector</b> = A valid jQuery selector where the object should be rendered.</p>
+    <p><b>option</b> = How the object should be rendered. Possible options are:</p>
+    <ul>
+      <li><code>"append"</code>: The object will be rendered within the target, after all of it's children. This is the default option.</li>
+      <li><code>"prepend"</code>: The object will be rendered within the target, before all of it's children.</li>
+      <li><code>"before"</code>: The object will be rendered immediately before the target.</li>
+      <li><code>"after"</code>: The object will be render immediately after the target.</li>
+      <li><code>"replace"</code>: The object will replace the target.</li>
+      <li><code>"return"</code>: The object will not be rendered to the DOM, instead the virtual DOM elemnt (jQuery object) will be returned.</li>
+    </ul>
+    <p>This method should not be overwritten.</p>
+
+    <h5><code>refresh([data])</code></h5>
+    <p>This method refreshes any instance of the object that may have been rendered to the DOM.</p>
+    <p><b>data</b> = An optional piece of data that may explain why the object is being refreshed. This may allow the <a href='#refresher'>refresher method</a> to refresh the element inteligently (with as few changes as possible).</p>
+    <p>This method should not be overwritten.</p>
+
+    <h5><code>destroy()</code></h5>
+    <p>This method destroys all instances of this object in the DOM.</p>
+    <p>This method should not be overwritten.</p>
+
+    <h5><code>clean()</code></h5>
+    <p>This method cleans up some memory by deleting virtual DOM elements of real DOM elements that were removed in a way other than the "destroy" method.</p>
+    <p>This method should not be overwritten.</p>
+
+    <h5><code>renderer()</code></h5>
+    <p>This is the method that should do the actual rendering of the DOM element and return it.</p>
+    <p>This method has a default, but should be overwritten.</p>
+
+    <h5><code>refresher($element, [data])</code></h5>
+    <p>This method is called once for each rendered element by the refresh method. Overwriting this method allows you to more inteligently update the element without re-rendering it.</p>
+    <p><b>$element</b> = The element to be refreshed (jQuery object).</p>
+    <p><b>data</b> = The data passed into the refresh method is forwarded to this method.</p>
+    <p>If this function returns an element, that element will replace the currently rendered element, otherwise it will not.</p>
+    <p>This method has a default, but can be overwritten.</p>
+
+    <h5><code>destroyer($element)</code></h5>
+    <p>This method is called once for each rendered element by the destroy method. It passes in the DOM element (jQuery object) to be destroyed.</p>
+    <p>This method has a default, but can be overwritten.</p>
+
+    <h5><code>cleaner()</code></h5>
+    <p>This method is called when the clean function is called. It allows you define custom code to run when the object is "cleaned".</p>
+
+    <hr>
+    <h3>The GUID</h3>
+    <p><em>Obj.JS</em> uses <a href='http://github.com/dustinpoissant/GUIDJS/' target='_blank'>GUID.JS</a> (included) to create a unique identifier for each instance of any prototype that extends Obj. This is stored as a member named guid. This member is read only, the GUID is also added to the rendered element as an attribute.</p>
+
+    <h5>Obj.directory</h5>
+    <p><em>Obj.JS</em> stores each instance in <code>Obj.directory</code> where it can be retrieved at a later time when you do not have direct access to the object. Using this you can retrieve the object that was used to generated the DOM element using the elements guid attribute.</p>
+<pre info="JavaScript">
+new Button("My Button").render("#target");
+
+// Then in another script
+var btn = Obj.directory[$("#target").children("button").attr("guid")];
+// Now you can use "btn"
+</pre>
+  </kempo-wrapper>
+</body>
+</html>

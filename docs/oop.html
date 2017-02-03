@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Object-Oriented Programming | Obj JS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel='stylesheet' href='Kempo.css' />
+  <script src='jquery-3.1.1.min.js'></script>
+  <script src='Kempo.js'></script>
+  <style>
+    pre {
+      max-height: 400px;
+    }
+  </style>
+</head>
+<body>
+  <kempo-include src='nav.inc.html'></kempo-include>
+  <kempo-wrapper>
+    <h1 center>Object-Oriented Programming</h1>
+    <p>Object-Oriented Programming (OOP) is the concept that related pieces of data, and functions that act upon that data, should be congregated together into a single "object".</p>
+    <p>This guide to OOP will be written in JavaScript (ECMAScript5).</p>
+    <p>This is a quick outline of the core concepts of Object-Oriented Programming. This is in no way meant to be a full tutorial on Object-Oriented Programming, it is meant to teach you just enough to use <em>Obj.JS</em>.</p>
+
+    <h3>Table of Contents</h3>
+    <ul>
+      <li><a href='#procedural-vs-oop'>Procedural vs OOP</a></li>
+      <li>
+        <a href='#objects'>Objects</a>
+        <ul>
+          <li><a href='#members'>Members</a></li>
+          <li><a href='#methods'>Methods</a></li>
+          <li><a href='#private-members-methods'>Private Members/Methods</a></li>
+        </ul>
+      </li>
+      <li><a href='#prototypes'>Prototypes</a></li>
+      <li><a href='#instances'>Instances</a></li>
+      <li><a href='#literals'>Literals</a></li>
+      <li><a href='#inheritance'>Inheritance</a></li>
+    </ul>
+
+    <hr>
+    <h3 id='procedural-vs-oop'>Procedural vs OOP</h3>
+    <p>In procedural code, data is stored individually in variables and many functions are created in the global scope that the data is passed into via arguments and new data is returned from the function.</p>
+    <p>In OOP, similar data is aggregated into "objects" and the functions that use this data is also aggregated into the object, it can act on the data without the data being passed into the function, and it can modify that data without returning it.</p>
+    <p>Here are two examples of code used to introduce a person. The first example is procedural* and the second is similar but uses OOP. There is some data that represents a person, their age is calculated from their birthdate and they introduce themselves.</p>
+    <p><i>*Note:</i> I had to use JavaScript's native <code>Date</code> object to retrieve todays date.</p>
+
+    <h6>Procedural</h6>
+<pre info="JavaScript">
+var first_name = "John";
+var last_name = "Doe";
+var birthday = "3/2/89"
+function age(birthday){
+  var birthday_month = parseInt(birthday.split("/")[0]);
+  var birthday_day = parseInt(birthday.split("/")[1]);
+  var birthday_year = parseInt(birthday.split("/")[2]);
+  if(birthday_year < 20)
+    birthday_year+=2000;
+  if(birthday_year < 100)
+    birthday_year+=1900;
+
+  var today_month = new Date().getMonth();
+  var today_day = new Date().getDate();
+  var today_year = new Date().getFullYear();
+
+  var age_days = today_day - birthday_day;
+  var age_months = today_month - birthday_month;
+  var age_years = today_year - birthday_year;
+  if(age_days < 0){
+    age_months--;
+    age_days+=30;
+  }
+  if(age_months < 0){
+    age_years--;
+    age_months+=12;
+  }
+  return age_years + " Years, " + age_months + " Months and " + age_days + " days";
+}
+function introduce(fn, ln, bd){
+  console.log("Hello my name is " + fn + " " + ln + ", and I am " + age(bd) + " old.")
+}
+introduce(first_name, last_name, birthday);
+</pre>
+    <h6>OOP</h6>
+<pre info="JavaScript">
+var person = {
+  first_name: "John",
+  last_name: "Doe",
+  birthday: new Date("3/2/89"),
+  age: function(){
+    var age = new Date(new Date() - this.birthday);
+    return (age.getFullYear()-1970) + " Years, " + age.getMonth() + " Months and " + age.getDate() + " days";
+  },
+  introduce: function(){
+    console.log("Hello my name is " + this.first_name + " " + this.last_name + ", and I am " + this.age() + " old.")
+  }
+};
+person.introduce();
+</pre>
+
+    <hr>
+    <h3 id='objects'>Objects</h3>
+    <p>An object is a collection of data and functions to apply to that data. For example a person can have a first name, a last name a birthdate and other data about them. In OOP we would aggregate all that data together into an "object".</p>
+
+    <h5 id='members'>Members</h5>
+    <p>A member is piece of data that belongs to an object. Any data type can be used as a member. Members are essentially variables that belong to an object. If we had an object called "myObject" with a member called "myMember" we can access this member using <code>myObject.myMember</code>.</p>
+
+    <h5 id='methods'>Methods</h5>
+    <p>A method is a function that belongs to an object. If we had an object called "myObject" with a method called "myMethod" we can call this method using <code>myObject.myMethod()</code>.</p>
+
+    <h5 id='private-members-methods'>Private Members/Methods</h5>
+    <p>The above members and methods are public methods because they can be accessed from outside the object definition. Alternatively there are private members and methods which are meant to be only accessed internally (from within the objects definition). Unfortunately JavaScript does not have private members / methods, but a common convention is to start the name of the member/method with an underscore <code>_</code>, this indicates that the member/method <b>should not</b> be accessed from outside the object definition.</p>
+
+    <hr>
+    <h3 id='prototypes'>Prototypes</h3>
+    <p>The above example works great if we want to create 1 person, but what if we wanted to create hundreds people that all use the same <code>age</code> or <code>introduce</code> methods, we would have to have hundreds of copies these functions. OOP offers a solution to problem by allowing us to create "blueprints" of objects, from these "blueprints" we can easily create hundreds or thousands of objects that all share some common code because they are objects of the same type/structure. In many languages these "blueprints" are called "Classes" in JavaScript they are called "prototypes", there are some MAJOR differences between classes and prototypes but that goes beyond the scope of this document. But in essence they both act as a "blueprint" from which we can create multiple copies of an object.</p>
+
+    <h5>Creating a new Prototype</h5>
+    <p>There are many ways to create prototypes in JavaScript, essentially EVERYTHING is a prototype. Every object could be used as a prototype to create another object. Because everything is a prototype, a <code>function</code> is also a prototype. One common way of creating a new prototype is to create a new function and use it as a constructor that creates a new prototype. To not confuse functions that are meant to be called as functions and functions that are meant to be used as a prototype. A common convention that is used to differentiate the two is that "function" names should start with a lower case letter, and "prototype" names should start with a capital letter.</p>
+
+    <p>The <code>this</code> keyword is used within the prototypes constructor (function) to access the members of the instance that is currently in context (the instance we are currently talking about).</p>
+
+<pre info="JavaScript">
+function MyProto(){
+  this.myMember = "This is a member";
+  this.myMethod = function(){
+    console.log("This is a method");
+    console.log("The member is: "+this.myMember);
+  };
+}
+</pre>
+
+    <hr>
+    <h3 id='instances'>Instances</h3>
+    <p>An instance is an object that was created from a prototype. For example you can have a red Dodge Viper and I can have a red Dodge Viper and these two cars can be 100% identical in every way, they are essentially "the same car", but they are not the same car, yours is yours and mine is mine, they are two instances of the same prototype.</p>
+    <p>To create an instance of a prototype we use the <code>new</code> keyword and call the function.</p>
+<pre info="JavaScript">
+var myInstance1 = new MyProto();
+var myInstance2 = new MyProto();
+myInstance2.myMember = "Member Value";
+myInstnace1.myMethod();
+myInstance2.myMethod();
+</pre>
+<pre info="Console">
+This is a Method
+The member is: This is a member
+This is a Method
+The member is: Member Value
+</pre>
+
+    <hr>
+    <h3 id='literals'>Literals</h3>
+    <p>A "literal" is an object that is also it's own prototype. We saw an example of this before, it uses the curly bracket notation (<code>{}</code>). This should be used if you only plan on creating one object of this type.</p>
+<pre info="JavaScript">
+var myLiteral = {
+  myMember: "This is a member",
+  myMethod: function(){
+    console.log("This is a method");
+  }
+}
+</pre>
+
+    <hr>
+    <h3 id='inheritance'>Inheritance</h3>
+    <p>Inheritance is the idea that one blueprint can be created from another blueprint and it automatically "inherits" all of the members and methods from the blueprint it was created from. The blueprint used to create the new blueprint is called the "parent" and the new blueprint is called the "child". In JavaScript there are many different methods for achieving inheritance, the one I typically use is the "apply" approach.</p>
+    <p>First create the "parent" prototype.</p>
+<pre info="JavaScript">
+function ParentProto(){
+  this.parentMember = "World";
+  this.method1 = function(){
+    console.log("Hello "+this.parentMember);
+  }
+}
+</pre>
+    <p>Then create the "child" prototype and apply the parent to it.</p>
+<pre info="JavaScript">
+function ChildProto(){
+  ParentProto.apply(this);
+  this.method1 = function(){ // Overwrite parent method
+    console.log("Goodbye "+this.parentMember);
+  }
+}
+</pre>
+    <p>And then the final (optional) step is to assign the prototype so that instanceof works.</p>
+<pre info="JavaScript">
+ChildProto.prototype = Object.create(ParentProto.prototype);
+</pre>
+
+    <p><br><br><br></p>
+  </kempo-wrapper>
+</body>
+</html>
