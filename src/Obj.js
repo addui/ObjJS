@@ -131,7 +131,7 @@ var Obj = (function(){
     this.cleaner = function(){};
     this.render = function(selector, option){
       var self = this;
-      if(selector === undefined)var selector = "body";
+      if(selector === undefined || selector == "")var selector = "body";
       if(option === undefined)var option = "append";
       else option = option.toLowerCase();
       var extra = [].slice.call(arguments, 2);
@@ -162,12 +162,11 @@ var Obj = (function(){
     this.refresh = function(data){
       if(this.pauseRefreshing) return this;
       var newElements = $();
-      for(var i=0;i<this._elements.length;i++){
+      for(var i=0; i<this._elements.length; i++){
         var oldElement = this._elements.eq(i);
-          var newElement = this.refresher.call(this, oldElement, data);
+        var newElement = this.refresher.call(this, oldElement, data);
         if(newElement){
           newElement.attr("guid", this.guid);
-          this._elements = this._elements.not(oldElement);
           oldElement.after(newElement);
           oldElement.remove();
           newElements = newElements.add(newElement);
@@ -274,7 +273,7 @@ var Obj = (function(){
   /*
   * Statics
   */
-  Obj.version = "3.0.0";
+  Obj.version = "3.0.1";
   Obj.directory = {};
   Obj.extend = function(child, parent){
     if(!parent)parent = Obj;
