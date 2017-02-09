@@ -273,7 +273,7 @@ var Obj = (function(){
   /*
   * Statics
   */
-  Obj.version = "3.0.1";
+  Obj.version = "3.0.2";
   Obj.directory = {};
   Obj.extend = function(child, parent){
     if(!parent)parent = Obj;

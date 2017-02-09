@@ -1,6 +1,6 @@
 # Obj.JS
 
-> *v 3.0.1*
+> *v 3.0.2*
 
 A Reactive Event-Driven Object-Oriented JavaScript Framework built on jQuery.
 
