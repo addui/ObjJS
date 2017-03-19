@@ -1,0 +1,37 @@
+{
+  "author": {
+    "name": "Dustin Poissant"
+  },
+  "bugs": {
+    "url": "https://github.com/dustinpoissant/ObjJS/issues"
+  },
+  "dependencies": {},
+  "description": "A Reactive Event-Driven Object-Oriented JavaScript Framework built on jQuery",
+  "devDependencies": {
+    "guidjs": "^1.4.1",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-uglify": "^2.1.0"
+  },
+  "homepage": "https://github.com/dustinpoissant/ObjJS#readme",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "main": "dist/Obj.js",
+  "maintainers": [
+    {
+      "name": "dustinpoissant",
+      "email": "dustinpoissant@gmail.com"
+    }
+  ],
+  "name": "objjs",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dustinpoissant/ObjJS.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "grunt"
+  },
+  "version": "3.1.0"
+}

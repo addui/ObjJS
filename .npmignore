@@ -47,4 +47,11 @@ Temporary Items
 .apdisk
 
 # Custom
-node_modules/
+build.php
+test/
+.gitattributes
+.gitignore
+.nojekyll
+dist
+docs
+node_modules

@@ -1,4 +1,3 @@
-var GUID=function(){function e(){do var t="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,function(e){var t=16*Math.random()|0,r="x"==e?t:3&t|8;return r.toString(16)});while(!e.register(t));return t}return e.create=function(){return e()},e.version="1.2.0",e.list=[],e.exists=function(t){return e.list.indexOf(t)>-1},e.register=function(t){return e.exists(t)?!1:(e.list.push(t),!0)},e}();
 var Obj = (function(){
   function toFunc(n){if("function"==typeof n)return n;if("string"==typeof n){if(void 0!=window[n]&&"function"==typeof window[n])return window[n];try{return new Function(n)}catch(t){}}return function(){return n}}
 
@@ -273,7 +272,7 @@ var Obj = (function(){
   /*
   * Statics
   */
-  Obj.version = "3.0.2";
+  Obj.version = "3.1.0";
   Obj.directory = {};
   Obj.extend = function(child, parent){
     if(!parent)parent = Obj;
