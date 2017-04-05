@@ -1,6 +1,6 @@
 {
   "name": "objjs",
-  "version": "3.1.2"
+  "version": "3.1.2",
   "description": "A Reactive Event-Driven Object-Oriented JavaScript Framework built on jQuery",
   "author": {
     "name": "Dustin Poissant"
@@ -25,5 +25,5 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "gulp",
     "watch": "gulp watch"
-  },
+  }
 }
