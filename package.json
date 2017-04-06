@@ -10,10 +10,11 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "guidjs": "^1.4.1",
+    "guidjs": "^1.4.2",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
-    "gulp-uglify": "^2.1.0"
+    "gulp-sourcemaps": "^2.5.1",
+    "gulp-uglify": "^2.1.2"
   },
   "homepage": "https://github.com/dustinpoissant/ObjJS#readme",
   "license": "CC-BY-NC-SA-3.0",
