@@ -6,7 +6,7 @@ A Reactive Event-Driven Object-Oriented JavaScript Framework built on jQuery.
 
 [Read the Docs](https://dustinpoissant.github.io/ObjJS/)
 
-#License
+## License
 
 This software is property of [**Dustin Poissant**](http://github.com/dustinpoissant).
 
