@@ -1,5 +1,7 @@
 # Obj.JS
 
+[Read the Docs](https://dustinpoissant.github.io/ObjJS/)
+
 ![](docs/ObjJS-purple.png)
 
 An Object-Oriented approach to reactive programming.
