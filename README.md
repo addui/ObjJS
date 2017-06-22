@@ -14,7 +14,6 @@ var HelloWorld = Obj({
 Obj.render(new HelloWorld(), document.body);
 ```
 
-<<<<<<< HEAD
 ##### Small
 Other frameworks that claim to be "small" are around 3kb, **Obj.JS** is about 1/6th of the size of these "small" frameworks coming in at 559 bytes when compressed and gzipped.
 =======
