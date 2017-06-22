@@ -16,9 +16,6 @@ Obj.render(new HelloWorld(), document.body);
 
 ##### Small
 Other frameworks that claim to be "small" are around 3kb, **Obj.JS** is about 1/6th of the size of these "small" frameworks coming in at 559 bytes when compressed and gzipped.
-=======
-## License
->>>>>>> 2021fbd0d6db9d622e8574eecd1354424fd5b58d
 
 ##### Fast
 **Obj.JS** is an abstraction layer above the DOM and does not keep any DOM elements in memory. This reduces your apps memory footprint and keeps it running fast.
