@@ -1,6 +1,6 @@
 {
   "name": "objjs",
-  "version": "3.1.3",
+  "version": "4.0.0",
   "description": "A Reactive Event-Driven Object-Oriented JavaScript Framework built on jQuery",
   "author": {
     "name": "Dustin Poissant"
@@ -10,7 +10,6 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "guidjs": "^1.4.2",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
     "gulp-sourcemaps": "^2.5.1",

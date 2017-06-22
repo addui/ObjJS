@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Counter Example - Obj.JS</title>
+  <script src='../Obj.js'></script>
+</head>
+<body>
+  <div id='target'></div>
+  <button onclick='c.start()'>Start</button>
+  <button onclick='c.stop()'>Stop</button>
+  <button onclick='c.count = 1'>Reset</button>
+  <script>
+    var Counter = Obj({
+      count: 0,
+      interval: 1000,
+      _intervalID: null,
+      start: function(){
+        clearInterval(this._intervalID);
+        var self = this;
+        this._intervalID = setInterval(function(){
+          self.count++;
+        }, this.interval);
+      },
+      stop: function(){
+        clearInterval(this._intervalID);
+      },
+      render: function(){
+        return "<p>" + this.count + "</p>";
+      },
+      refresh: function(element, property, value){
+        if(property == "count") element.innerText = value;
+        if(property == "interval") this.start();
+      },
+      init: function(count, interval){
+        this.count = count || 0;
+        this.interval = interval || 1000;
+      }
+    });
+
+    var c = new Counter(1);
+    Obj.render(c, "#target");
+  </script>
+</body>
+</html>

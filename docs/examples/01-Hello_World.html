@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hello World Example - Obj.JS</title>
+  <script src='../Obj.js'></script>
+</head>
+<body>
+<script>
+var HelloWorld = Obj({
+  text: "Hello World",
+  render: function(){
+    return "<p>" + this.text + "</p>";
+  },
+  refresh: function(element, property, value){
+    element.innerText = value;
+  }
+});
+Obj.render(new HelloWorld(), document.body);
+</script>
+</body>
+</html>

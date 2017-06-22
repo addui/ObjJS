@@ -1,0 +1,331 @@
+/*
+  Generic Styles
+*/
+body {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+}
+p {
+  line-height: 1.75em;
+}
+sup {
+  vertical-align: top;
+  position: relative;
+  top: -0.6em;
+  font-size: 0.6em;
+}
+section {
+  padding: 64px 16px;
+}
+button,
+.btn {
+  background-color: transparent;
+  border: 4px solid rgba(103, 58, 183, 0.9);
+  color: #673ab7;
+  border-radius: 16px;
+  min-width: 225px;
+  padding: 16px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  word-spacing: 1px;
+  font-size: 18px;
+  line-height: 24px;
+  transition: background-color 0.4s, color 0.4s;
+}
+button:hover,
+.btn:hover {
+  background-color: rgba(103, 58, 183, 0.9);
+  color: white;
+}
+button .fa,
+.btn .fa {
+  transform: scale(1.5);
+  margin: 0 8px;
+}
+label {
+  display: block;
+  font-variant: small-caps;
+  font-weight: 700;
+  font-size: 18px;
+}
+.purple {
+  background-color: #673ab7;
+  color: rgba(255,255,255,0.9);
+}
+.purple-text {
+  color: rgba(103, 58, 183, 0.9);
+}
+.purple button,
+.purple .btn {
+  border: 4px solid rgba(255,255,255,0.9);
+  color: rgba(255,255,255,0.9);
+}
+.purple button:hover,
+.purple .btn:hover {
+  background-color: rgba(255,255,255,0.9);
+  color: #673ab7;
+}
+.grey-text {
+  color: rgba(0,0,0,0.65);
+}
+.spacer {
+  display: block;
+  width: 100%;
+  height: 64px;
+}
+.knot {
+  display: inline-block;
+}
+.wrapper {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+pre {
+  background-color: rgba(0,0,0,0.02);
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: 2px;
+  margin: 16px;
+  padding: 0;
+}
+.purple pre,
+.purple iframe {
+  background-color: rgba(255,255,255,0.9);
+  border: 1px solid white;
+}
+code {
+  background-color: rgba(0,0,0,0.02);
+  border: 1px solid rgba(0,0,0,0.05);
+  font-weight: 400;
+  font-family: 'Roboto Mono', monospace;
+}
+pre, code {
+  font-family: 'Roboto Mono', monospace;
+}
+pre code {
+  display: block;
+  background-color: transparent;
+  border: none;
+  margin: 0;
+  padding: 0;
+  font-size: inherit;
+  overflow-x: auto;
+}
+.hljs {
+  background-color: transparent;
+  padding: 16px;
+  padding-top: 0;
+  position: relative;
+  height: 100%;
+}
+iframe {
+  width: calc(100% - 32px);
+  height: calc(100% - 72px);
+  margin: 16px;
+  margin-top: 0;
+  padding: 16px;
+  background-color: rgba(0,0,0,0.02);
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: 2px;
+}
+.half {
+  display: inline-block;
+  width: 50%;
+  vertical-align: top;
+}
+.third {
+  display: inline-block;
+  width: 33.333%;
+  vertical-align: top;
+}
+
+.flexgrid > * {
+  flex: 1;
+}
+
+@media (max-width: 768px){
+  p {
+    line-height: 1.5em;
+  }
+  section {
+    padding: 16px;
+  }
+  button,
+  .btn {
+    padding: 12px;
+    font-size: 16px;
+  }
+  .spacer {
+    height: 0;
+  }
+  .half,
+  .third {
+    width: 100%;
+  }
+}
+
+/*
+  Specific Elements
+*/
+#logo {
+  max-width: 100%;
+  width: 256px;
+  will-change: transform;
+  transition: transform 1s;
+}
+#main-headline {
+  font-size: 64px;
+  margin: 0;
+  font-weight: 300;
+}
+#quick-description {
+  margin: 8px;
+  color: rgba(255,255,255,0.6);
+}
+.fh1 {
+  height: 100px;
+}
+.fh2 {
+  height: 200px;
+}
+.fh3 {
+  height: 300px;
+}
+.fh4 {
+  height: 400px;
+}
+.fh5 {
+  height: 500px;
+}
+.fh6 {
+  height: 600px;
+}
+.hexagon {
+  width: 200px;
+  height: 200px;
+  background-image: url(hexagon-purple.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin: 0 auto;
+  transition: transform 0.5s;
+  transform: rotate(0deg);
+  will-change: transform;
+}
+.hexagon.white {
+  background-image: url(hexagon-white.png);
+}
+.hexagon:hover {
+  transform: rotate(60deg);
+}
+.hexagon .fa {
+  font-size: 64px;
+  line-height: 200px;
+  width: 200px;
+  text-align: center;
+  color: rgba(255,255,255,0.9);
+  transition: transform 0.5s;
+  transform: rotate(0deg);
+}
+.hexagon.white .fa {
+  color: rgba(103, 58, 183, 0.9)
+}
+.hexagon:hover .fa {
+  transform: rotate(-60deg);
+}
+.hexagon-headline {
+  margin-top: 0;
+}
+.hexagon .fa.fa-ban {
+  font-size: 100px;
+}
+.hexagon .fa.fa-object-group {
+  font-size: 40px;
+}
+.hexagon .fa.fa-code {
+  font-size: 48px;
+}
+.example {
+  display: inline-block;
+  width: 256px;
+  height: 256px;
+  background-color: white;
+  box-shadow: 0 2px 3px rgba(0,0,0,0.25);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+.example iframe {
+  display: block;
+  width: 256px;
+  height: 256px;
+  pointer-events: none;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+}
+.example span {
+  display: block;
+  position: absolute;
+  width: 256px;
+  height: 256px;
+  top: 0;
+  left: 0;
+  line-height: 256px;
+  font-size: 24px;
+  color: white;
+  background-color: rgba(103, 58, 183, 0.7);
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.example:hover span {
+  opacity: 1;
+}
+@media (max-width: 768px){
+  #logo {
+    width: 128px;
+  }
+  #main-headline {
+    font-size: 32px;
+  }
+  #quick-description {
+    font-size: 14px;
+  }
+  #download-btn {
+    display: none;
+  }
+  .fh1, .fh2, .fh3, .fh4, .fh5, .fh6 {
+    height: auto;
+  }
+  .hexagon {
+    width: 128px;
+    height: 128px;
+  }
+  .hexagon .fa {
+    font-size: 32px;
+    line-height: 128px;
+    width: 128px;
+  }
+  .hexagon .fa.fa-ban {
+    font-size: 64px;
+  }
+  .hexagon .fa.fa-object-group {
+    font-size: 26px;
+  }
+  .hexagon .fa.fa-code {
+    font-size: 32px;
+  }
+}
+
+/*
+ Custom Highlighting -- start with github-gist theme
+*/
+.hljs-string, .hljs-variable, .hljs-template-variable, .hljs-strong, .hljs-emphasis, .hljs-quote, .hljs-name {
+  color: #673ab7;
+}
+.hljs-keyword {
+  color: #673ab7;
+  font-weight: 700;
+}
+.hljs-attr {
+  color: #a71d5d;
+}

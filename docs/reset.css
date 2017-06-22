@@ -1,0 +1,232 @@
+body {
+  margin: 0;
+  padding: 0.1px;
+  font-size: 0;
+  width: 100vw;
+  max-width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+body * {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+p, span, a, label, input, textarea, select, option, li, td, th, pre, code, button, blockquote {
+  font-size: 16px;
+  line-height: 1.35em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.35em;
+}
+
+h1 {
+  font-size: 36px;
+}
+
+h2 {
+  font-size: 32px;
+}
+
+h3 {
+  font-size: 28px;
+}
+
+h4 {
+  font-size: 24px;
+}
+
+h5 {
+  font-size: 20px;
+}
+
+h6 {
+  font-size: 16px;
+}
+
+p, h1, h2, h3, h4, h5, h6, input, select, textarea, label, ol, ul, a, pre, button, blockquote {
+  margin: 16px;
+}
+
+ol, ul {
+  padding: 0;
+  padding-left: 16px;
+}
+
+ul {
+  list-style: disc;
+}
+
+ol {
+  list-style: decimal;
+}
+
+li {
+  padding: 0;
+  margin: 0;
+  margin-left: 16px;
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+blockquote {
+  border: 1px solid transparent;
+  border-left: 4px solid rgba(0, 0, 0, 0.5);
+  border-radius: 16px;
+  padding: 15px 16px;
+  quotes: none;
+}
+
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a, p a, label a, pre a, blockquote a {
+  display: inline;
+  margin: 0;
+  font-size: inherit;
+}
+
+h1 code, h2 code, h3 code, h4 code, h5 code, h6 code, p code, label code, pre code, blockquote code {
+  font-size: inherit;
+}
+
+input:not([type=button]):not([type=submit]):not([type=reset]):not([type=checkbox]):not([type=radio]), select, textarea {
+  display: block;
+  width: calc(100% - 32px);
+  padding: 8px 16px;
+  outline: none;
+  background-color: #fdfdfd;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 2px;
+  transition: background 0.5s, border 0.5s;
+  font-family: inherit;
+}
+
+input:not([type=button]):not([type=submit]):not([type=reset]):not([type=checkbox]):not([type=radio]):focus, select:focus, textarea:focus {
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  background-color: white;
+}
+
+input:not([type=button]):not([type=submit]):not([type=reset]):not([type=checkbox]):not([type=radio])[disabled], select[disabled], textarea[disabled] {
+  background-color: #e0e0e0;
+}
+
+select {
+  cursor: pointer;
+}
+
+select[multiple] {
+  padding: 0;
+}
+
+select[multiple] option {
+  padding: 16px;
+}
+
+textarea {
+  resize: vertical;
+  height: 8em;
+}
+
+label {
+  display: inline-block;
+  font-weight: 700;
+  opacity: 0.7;
+  vertical-align: middle;
+}
+
+input[type=checkbox],
+input[type=radio] {
+  display: inline-block;
+  margin: 16px;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+pre,
+code {
+  background-color: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 2px;
+}
+
+code {
+  padding: 2px 4px;
+}
+
+pre {
+  padding: 16px;
+}
+
+pre code {
+  padding: 0;
+  background-color: transparent;
+  border: 0px solid transparent;
+  border-radius: 0;
+}
+
+button,
+input[type=button],
+input[type=submit],
+input[type=reset],
+.btn {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #ccc;
+  border: none;
+  outline: none;
+  border-radius: 2px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+button:hover,
+input[type=button]:hover,
+input[type=submit]:hover,
+input[type=reset]:hover,
+.btn:hover {
+  background-color: #bbb;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+strong, b {
+  font-weight: 700;
+}
+
+i, em {
+  font-style: italic;
+}
+
+audio, video, canvas {
+  display: inline-block;
+}
+
+summary {
+  display: list-item;
+}
+
+img {
+  border-style: none;
+}
+
+template, input[type=hidden] {
+  display: none;
+}
+
+/*# sourceMappingURL=reset.css.map */

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Clock Example - Obj.JS</title>
+  <script src='../Obj.js'></script>
+</head>
+<body>
+  <script>
+    var Clock = Obj({
+      now: new Date(),
+      render: function(){
+        return "<p>" + this.now.toLocaleTimeString() + "</p>"
+      },
+      refresh: function(element, property, value){
+        if(property == "now") element.innerText = this.now.toLocaleTimeString();
+      },
+      init: function(){
+        var self = this;
+        setInterval(function(){
+          self.now = new Date();
+        }, 1000);
+      }
+    });
+
+    Obj.render(new Clock(), document.body);
+  </script>
+</body>
+</html>
