@@ -17,7 +17,7 @@ Obj.render(new HelloWorld(), document.body);
 ```
 
 ##### Small
-Other frameworks that claim to be "small" are around 3kb, **Obj.JS** is about 1/6th of the size of these "small" frameworks coming in at 559 bytes when compressed and gzipped.
+Other frameworks that claim to be "small" are around 3kb; **Obj.JS** is about 1/6th of the size of these "small" frameworks coming in at 621 bytes when compressed and gzipped.
 
 ##### Fast
 **Obj.JS** is an abstraction layer above the DOM and does not keep any DOM elements in memory. This reduces your apps memory footprint and keeps it running fast.
@@ -27,11 +27,11 @@ If you know Object-Oriented Programming than you already know how to use **Obj.J
 
 ### How is Obj.JS different?
 
-##### No Virtual DOM
-Unlike other reactive frameworks, **Obj.JS** does not attempt to simulate the DOM, which is good because the DOM sucks. It stays as close to core prototypal Object-Oriented Programming syntax as possible while still maintaining bindings between your objects and the DOM. It also does **not use the DOM** making it as fast as other frameworks that use Virtual DOMs.
+##### Not Opinionated
+Unlike other reactive frameworks, **Obj.JS** does not tell you how to write your code. You do not need to create your protoypes with a "type", "props" and "children" as other reactive frameworks require, create your prototypes with whatever properties you want. **Obj.JS** does not have lengthy tutorials on "the correct way" to use it, because "the correct way" is however you want.
 
 ##### No Bloat
-Obj.JS does not ship with unnecessary code. As of version 4.0 **Obj.JS** no longer ships with an event management system, DOM manipulation system or complex object storage system, it stays closer to Vanilla JS making smaller, faster and easier to use. Many frameworks are highly opinionated and aim to be feature rich, **Obj.JS** aims to be simple and flexible.
+Obj.JS does not ship with unnecessary code. As of version 4.0 **Obj.JS** no longer ships with an event management system, DOM manipulation system or complex object storage system. It stays closer to Vanilla JS making it smaller, faster and easier to use. While other frameworks aim to be feature rich, **Obj.JS** aims to be simple and flexible.
 
 ### Getting Started
 ##### 1. Creating a prototype
@@ -155,11 +155,11 @@ Obj.render(c, "#target");
 ```
 
 ### Make it Fast
-When a member is changed the entire element is re-rendered and replaced. If the rendered object is complex (multiple elements with many event handlers) this can make the DOM very slow.
+When a member is changed the entire element is re-rendered and replaced. If the rendered object is complex (multiple elements deep with many event handlers) this can make your page slow.
 
-To fix this problem you should give your prototype a `refresh` method. This method should accept 3 arguments: the element that needs to be updated, the name of the property that was changed and the new value of the property.
+To fix this problem you should give your prototype a `refresh` method. This method should accept 3 arguments: the element that needs to be updated, the name of the property that was changed and the new value of that property.
 
-The `refresh` method should ideally make the minimal amount of changes to the DOM to represent the new state of the object, but can optionally instead return a new `HTMLElement` to replace the current element, but again this is slow and should be avoided if at all possible.
+Your `refresh` method should make the minimal amount of changes to the DOM to represent the new state of the object. Optionally it can return a new `HTMLElement` to replace the current element, but again this is slow and should be avoided if at all possible.
 
 Lets create a `refresh` method for the previous example to make it faster:
 
