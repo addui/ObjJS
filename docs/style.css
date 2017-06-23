@@ -126,6 +126,7 @@ iframe {
   background-color: rgba(0,0,0,0.02);
   border: 1px solid rgba(0,0,0,0.05);
   border-radius: 2px;
+  overflow: hidden;
 }
 .half {
   display: inline-block;
@@ -231,6 +232,9 @@ iframe {
 .hexagon:hover .fa {
   transform: rotate(-60deg);
 }
+.hexagon:hover .fa.fa-commenting-o {
+  transform: rotate(-60deg) scale(-1, 1);
+}
 .hexagon-headline {
   margin-top: 0;
 }
@@ -242,6 +246,10 @@ iframe {
 }
 .hexagon .fa.fa-code {
   font-size: 48px;
+}
+.hexagon .fa.fa-commenting-o {
+  font-size: 48px;
+  transform: rotate(0deg) scale(-1, 1);
 }
 .example {
   display: inline-block;

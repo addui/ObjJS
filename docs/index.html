@@ -60,7 +60,7 @@ Obj.render(new HelloWorld(), document.body);
       <div class='third'>
         <div class='hexagon'><i class="fa fa-compress" aria-hidden="true"></i></div>
         <h3 align='center' class='purple-text hexagon-headline'>Small</h3>
-        <p>Other frameworks that claim to be "small" are around 3kb, <strong>Obj.JS</strong> is about 1/6<sup>th</sup> of the size of these "small" frameworks coming in at 559 bytes when compressed and gzipped.</p>
+        <p>Other frameworks that claim to be "small" are around 3kb; <strong>Obj.JS</strong> is about 1/6<sup>th</sup> of the size of these "small" frameworks coming in at 621 bytes when compressed and gzipped.</p>
       </div>
       <div class='third'>
         <div class='hexagon'><i class="fa fa-rocket" aria-hidden="true"></i></div>
@@ -80,12 +80,12 @@ Obj.render(new HelloWorld(), document.body);
       <div class='half'>
         <div class='hexagon white'>
           <span class="fa-stack">
-            <i class="fa fa-code fa-stack-1x"></i>
+            <i class="fa fa-commenting-o fa-flip-horizontal fa-stack-1x"></i>
             <i class="fa fa-ban fa-stack-2x"></i>
           </span>
         </div>
-        <h3 align='center' class='hexagon-headline'>No Virtual DOM</h3>
-        <p>Unlike other reactive frameworks, <strong>Obj.JS</strong> does not attempt to simulate the DOM, which is good because the DOM sucks. It stays as close to core prototypal Object-Oriented Programming syntax as possible while still maintaining bindings between your objects and the DOM. It also does <strong>not use the DOM</strong> making it as fast as other frameworks that use Virtual DOMs.</p>
+        <h3 align='center' class='hexagon-headline'>Not Opinionated</h3>
+        <p>Unlike other reactive frameworks, <strong>Obj.JS</strong> does not tell you how to write your code. You do not need to create your protoypes with a "type", "props" and "children" as other reactive frameworks require, create your prototypes with whatever properties you want. <strong>Obj.JS</strong> does not have lengthy tutorials on "the correct way" to use it, because "the correct way" is however you want.</p>
       </div>
       <div class='half'>
         <div class='hexagon white'>
@@ -95,7 +95,7 @@ Obj.render(new HelloWorld(), document.body);
           </span>
         </div>
         <h3 align='center' class='hexagon-headline'>No Bloat</h3>
-        <p><string>Obj.JS</strong> does not ship with unnecessary code. As of version 4.0 <strong>Obj.JS</strong> no longer ships with an event management system, DOM manipulation system or complex object storage system, it stays closer to Vanilla JS making smaller, faster and easier to use. Many frameworks are highly opinionated and aim to be feature rich, <strong>Obj.JS</strong> aims to be simple and flexible.</p>
+        <p><string>Obj.JS</strong> does not ship with unnecessary code. As of version 4.0 <strong>Obj.JS</strong> no longer ships with an event management system, DOM manipulation system or complex object storage system. It stays closer to Vanilla JS making it smaller, faster and easier to use. While other frameworks aim to be feature rich, <strong>Obj.JS</strong> aims to be simple and flexible.</p>
       </div>
     </div>
   </section>
@@ -183,8 +183,8 @@ var Person = Obj({
 var p = new Person("Dustin", "Poissant");
 Obj.render(p, "#target");
 </code></pre>
-      <p class='grey-text'><em>The target can be a query string, <code>HTMLElement</code> or array of <code>HTMLElement</code>s.</em></p>
-      <p>The <code>Obj.render()</code> function returns the rendered <code>HTMLElement</code> or array of <code>HTMLElements</code> if it was rendered to multiple targets.</p>
+      <p>The target can be a query string, <code>HTMLElement</code> or array of <code>HTMLElement</code>s.</p>
+      <p>The <code>Obj.render()</code> function returns the rendered <code>HTMLElement</code> or array of <code>HTMLElement</code>s if it was rendered to multiple targets.</p>
       <label>Results:</label>
       <iframe src='examples/02-Say_Hi.html' class='fh2'></iframe>
     </div>
@@ -242,9 +242,9 @@ Obj.render(c, "#target");
   <section class='wrapper'>
     <h2 align='center' class='purple-text'>Make it Fast</h2>
     <div style='max-width: 768px; margin: 0 auto;'>
-      <p>When a member is changed the entire element is re-rendered and replaced. If the rendered object is complex (multiple elements with many event handlers) this can make the DOM very slow.</p>
-      <p>To fix this problem you should give your prototype a <code>refresh</code> method. This method should accept 3 arguments: the element that needs to be updated, the name of the property that was changed and the new value of the property.</p>
-      <p>The <code>refresh</code> method should ideally make the minimal amount of changes to the DOM to represent the new state of the object, but can optionally instead return a new <code>HTMLElement</code> to replace the current element, but again this is slow and should be avoided if at all possible.</p>
+      <p>When a member is changed the entire element is re-rendered and replaced. If the rendered object is complex (multiple elements deep with many event handlers) this can make your page slow.</p>
+      <p>To fix this problem you should give your prototype a <code>refresh</code> method. This method should accept 3 arguments: the element that needs to be updated, the name of the property that was changed and the new value of that property.</p>
+      <p>Your <code>refresh</code> method should make the minimal amount of changes to the DOM to represent the new state of the object. Optionally it can return a new <code>HTMLElement</code> to replace the current element, but again this is slow and should be avoided if at all possible.</p>
       <p>Lets create a <code>refresh</code> method for the previous example to make it faster:</p>
     </div>
     <div class='half'>
@@ -270,20 +270,20 @@ Obj.render(c, "#target");
   <section class='purple'>
     <h2 align='center'>Examples</h2>
     <div class='wrapper' align='center'>
-      <a href='examples/04-Clock.html' class='example'>
-        <iframe src='examples/04-Clock.html'></iframe>
+      <a href='https://codepen.io/dustinpoissant/pen/qjXPoM?editors=0010' target='_blank' class='example'>
+        <iframe src='https://codepen.io/dustinpoissant/debug/qjXPoM/'></iframe>
         <span>Clock</span>
       </a>
-      <a href='examples/05-To_Do_List.html' class='example'>
-        <iframe src='examples/05-To_Do_List.html'></iframe>
+      <a href='https://codepen.io/dustinpoissant/pen/rwzYxZ?editors=0110' target='_blank' class='example'>
+        <iframe src='https://codepen.io/dustinpoissant/debug/rwzYxZ/'></iframe>
         <span>To Do List</span>
       </a>
-      <a href='examples/06-Synced_Text.html' class='example'>
-        <iframe src='examples/06-Synced_Text.html'></iframe>
+      <a href='https://codepen.io/dustinpoissant/pen/bRrYeW?editors=0010' target='_blank' class='example'>
+        <iframe src='https://s.codepen.io/dustinpoissant/debug/bRrYeW'></iframe>
         <span>Synced Text</span>
       </a>
-      <a href='examples/07-Tic_Tac_Toe.html' class='example'>
-        <iframe src='examples/07-Tic_Tac_Toe.html'></iframe>
+      <a href='https://codepen.io/dustinpoissant/pen/dRzZOy?editors=0110' target='_blank' class='example'>
+        <iframe src='https://codepen.io/dustinpoissant/debug/dRzZOy'></iframe>
         <span>Tic Tac Toe</span>
       </a>
     </div>

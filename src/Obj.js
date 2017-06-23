@@ -82,3 +82,4 @@ Obj.refresh = function(obj, name, value){
   }
   return Obj;
 };
+Obj.version = "4.0.1";
