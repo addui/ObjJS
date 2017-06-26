@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>To Do List - Obj.JS</title>
+  <script src='../Obj.js'></script>
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+      text-align: center;
+      width: 100vw;
+      max-width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .TicTacToe {
+      display: block;
+      width: 80vmin;
+      height: 90vmin;
+      margin: 5vmin auto;
+      padding: 0;
+      background-color: #f9f9f9;
+      border: 1px solid #e0e0e0;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .TicTacToe p {
+      display: block;
+      width: 100%;
+      height: 10vmin;
+      margin: 0;
+      padding: 0;
+      line-height: 10vmin;
+      text-align: center;
+      font-weight: 700;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .TicTacToe > div {
+      /* Board */
+      display: block;
+      width: 80vmin;
+      height: 80vmin;
+    }
+    .TicTacToe > div > div {
+      /* Row */
+      display: block;
+      width: 100%;
+      height: calc(26.666vmin - 0px);
+    }
+    .TicTacToeCell {
+      display: inline-block;
+      width: calc(26.666vmin - 2px);
+      height: calc(26.666vmin - 2px);
+      line-height: calc(26.666vmin - 2px);
+      font-size: 20vmin;
+      border: 1px solid #e0e0e0;
+      cursor: pointer;
+      background-color: rgba(255, 255, 255, 0);
+      transition: background-color 0.5s;
+      vertical-align: top;
+    }
+    .TicTacToeCell:hover {
+      background-color: rgba(255, 255, 255, 1);
+    }
+    .TicTacToeCell.taken {
+      cursor: auto;
+    }
+    .TicTacToeCell.taken:hover {
+      background-color: rgba(255, 255, 255, 0);
+    }
+  </style>
+</head>
+<body>
+  <script>
+    var TicTacToeCell = Obj({
+      _game: null,
+      owner: "",
+      render: function() {
+        var self = this,
+          $cell;
+        $cell = document.createElement("div");
+        $cell.className = "TicTacToeCell";
+        $cell.innerText = this.owner;
+        $cell.addEventListener("click", function() {
+          if (!self._game.winner && self.owner == "") {
+            self.owner = self._game.turn;
+            if (self._game.turn == "X") self._game.turn = "O";
+            else self._game.turn = "X";
+            game.winCheck();
+          }
+        });
+        if (this.owner != "") $cell.className += " taken";
+        return $cell;
+      },
+      refresh: function(element, property, value) {
+        if (property == "owner") {
+          element.innerText = value;
+          element.className += " taken";
+        }
+        return;
+      },
+      init: function(game) {
+        this._game = game;
+      }
+      });
+      var TicTacToe = Obj({
+      turn: "X",
+      message: "X's Turn",
+      winner: false,
+      _board: null,
+      winCheck: function() {
+        for (var i = 0; i < 3; i++) {
+          /* Check Each Row */
+          if (
+            this._board[i][0].owner != "" &&
+            this._board[i][0].owner == this._board[i][1].owner &&
+            this._board[i][0].owner == this._board[i][2].owner
+          ) {
+            this.winner = this._board[i][0].owner;
+            break;
+          }
+          /* Check Each Column */
+          if (
+            this._board[0][i].owner != "" &&
+            this._board[0][i].owner == this._board[1][i].owner &&
+            this._board[0][i].owner == this._board[2][i].owner
+          ) {
+            this.winner = this._board[0][i].owner;
+            break;
+          }
+        }
+        /* Check for \ */
+        if (
+          !this.winner &&
+          this._board[0][0].owner != "" &&
+          this._board[0][0].owner == this._board[1][1].owner &&
+          this._board[0][0].owner == this._board[2][2].owner
+        ) {
+          this.winner = this._board[0][0].owner;
+        }
+        /* Check for / */
+        if (
+          !this.winner &&
+          this._board[2][0].owner != "" &&
+          this._board[2][0].owner == this._board[1][1].owner &&
+          this._board[2][0].owner == this._board[0][2].owner
+        ) {
+          this.winner = this._board[2][0].owner;
+        }
+
+        /* Check for tie game */
+        if (!this.winner) {
+          var hasEmpty = false;
+          for (var r = 0; r < 3; r++) {
+            for (var c = 0; c < 3; c++) {
+              if (this._board[r][c].owner == "") {
+                hasEmpty = true;
+              }
+            }
+          }
+          if (!hasEmpty) this.winner = true;
+        }
+      },
+      render: function() {
+        var self = this,
+          $game,
+          $message,
+          $board;
+        $game = document.createElement("div");
+        $game.className = "TicTacToe";
+        $message = document.createElement("p");
+        $message.innerText = this.message;
+        $game.appendChild($message);
+        $board = document.createElement("div");
+        for (var r = 0; r < this._board.length; r++) {
+          var $row = document.createElement("div");
+          for (var c = 0; c < this._board[r].length; c++) {
+            $row.appendChild(Obj.render(this._board[r][c]));
+          }
+          $board.appendChild($row);
+        }
+        $game.appendChild($board);
+
+        return $game;
+      },
+      refresh: function(element, property, value) {
+        if (property == "winner") {
+          if (value === true) {
+            this.message = "Tie Game";
+          } else {
+            this.message = value + " Wins!";
+          }
+          var self = this;
+          setTimeout(function() {
+            // So that DOM can update
+            if (confirm(self.message + "\rPlay Again?")) {
+              element.parentNode.removeChild(element);
+              window.game = new TicTacToe();
+              Obj.render(window.game, document.body);
+            }
+          }, 16);
+        } else if (property == "turn") {
+          this.message = value + "'s Turn";
+        } else if (property == "message") {
+          element.getElementsByTagName("p")[0].innerText = value;
+        }
+      },
+      init: function(first) {
+        this.turn = first || "X";
+        this._board = [];
+        for (var r = 0; r < 3; r++) {
+          this._board.push([]);
+          for (var c = 0; c < 3; c++) {
+            this._board[r].push(new TicTacToeCell(this));
+          }
+        }
+      }
+    });
+
+    var game = new TicTacToe();
+    Obj.render(game, document.body);
+  </script>
+</body>
+</html>

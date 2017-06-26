@@ -1,7 +1,7 @@
 {
   "name": "objjs",
-  "version": "4.0.1",
-  "description": "A Reactive Event-Driven Object-Oriented JavaScript Framework built on jQuery",
+  "version": "4.0.2",
+  "description": "An Object-Oriented approach to reactive programming.",
   "author": {
     "name": "Dustin Poissant"
   },
