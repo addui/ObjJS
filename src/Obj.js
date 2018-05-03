@@ -3,22 +3,24 @@ window.Obj = function(o){
     var self = this, id = Obj.__counter++, members = {};
     Object.defineProperty(this,"objID",{get:function(){return id}});
     for(var k in o){
-      if(k != "init"){
-        if(typeof(o[k]) == "function" || k[0] == "_") this[k] = o[k];
-        else {
-          members[k] = o[k];
-          (function(k){
-            Object.defineProperty(self, k, {
-              get: function(){
-                return members[k];
-              },
-              set: function(value){
-                members[k] = value;
-                Obj.refresh(self, k, value);
-              },
-              enumerable: true
-            })
-          })(k);
+      if(o.hasOwnProperty(k)){
+        if(k != "init"){
+          if(typeof(o[k]) == "function" || k[0] == "_") this[k] = o[k];
+          else {
+            members[k] = o[k];
+            (function(k){
+              Object.defineProperty(self, k, {
+                get: function(){
+                  return members[k];
+                },
+                set: function(value){
+                  members[k] = value;
+                  Obj.refresh(self, k, value);
+                },
+                enumerable: true
+              })
+            })(k);
+          }
         }
       }
     }
@@ -65,6 +67,7 @@ Obj.refresh = function(obj, name, value){
     for(var i=0; i<$targets.length; i++){
       var $newEl = obj.refresh($targets[i], name, value);
       if($newEl){
+        if(typeof($newEl) == "string") $newEl = Obj.parse($newEl);
         $newEl.setAttribute("objid", obj.objID);
         $targets[i].parentNode.replaceChild($newEl, $targets[i]);
       }
@@ -82,4 +85,4 @@ Obj.refresh = function(obj, name, value){
   }
   return Obj;
 };
-Obj.version = "4.0.1";
+Obj.version = "4.0.3";
